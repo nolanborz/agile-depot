@@ -9,24 +9,61 @@
 #   end
 Product.delete_all
 
-3.times do
-  Product.create!(
-    title: 'Donuts!',
-    description: %(
-      <p>
-        <em>Fresh, Delicious Artisanal Donuts</em>
 
-        Indulge in our handcrafted donuts, made fresh daily with premium ingredients.
-        Each donut is carefully prepared using traditional techniques passed down through
-        generations, ensuring the perfect balance of flavors and textures.
+Product.create!(
+  title: 'Donuts!',
+  description: %(
+    <p>
+      <em>Fresh, Delicious Artisanal Donuts</em>
 
-        Our signature recipes combine classic favorites with innovative twists,
-        creating unique treats that satisfy both traditional tastes and adventurous
-        palates. Whether you're starting your day, seeking an afternoon treat, or
-        planning a special event, our donuts are sure to delight.
-      </p>
-    ),
-    image_url: 'donut.jpg',
-    price: 10.99
-  )
-end
+      Indulge in our handcrafted donuts, made fresh daily with premium ingredients.
+      Each donut is carefully prepared using traditional techniques passed down through
+      generations, ensuring the perfect balance of flavors and textures.
+
+      Our signature recipes combine classic favorites with innovative twists,
+      creating unique treats that satisfy both traditional tastes and adventurous
+      palates. Whether you're starting your day, seeking an afternoon treat, or
+      planning a special event, our donuts are sure to delight.
+    </p>
+  ),
+  image_url: 'donut.jpg',
+  price: 2.99
+)
+Product.create!(
+  title: 'Sugar donut!',
+  description: %(
+    <p>
+      <em>Fresh, Delicious Artisanal Donuts</em>
+
+      Indulge in our handcrafted donuts, made fresh daily with premium ingredients.
+      Each donut is carefully prepared using traditional techniques passed down through
+      generations, ensuring the perfect balance of flavors and textures.
+
+      Our signature recipes combine classic favorites with innovative twists,
+      creating unique treats that satisfy both traditional tastes and adventurous
+      palates. Whether you're starting your day, seeking an afternoon treat, or
+      planning a special event, our donuts are sure to delight.
+    </p>
+  ),
+  image_url: 'sugar-donut.png',
+  price: 1.99
+)
+Product.create!(
+  title: 'Chocolate donut!',
+  description: %(
+    <p>
+      <em>Fresh, Delicious Artisanal Donuts</em>
+
+      Indulge in our handcrafted donuts, made fresh daily with premium ingredients.
+      Each donut is carefully prepared using traditional techniques passed down through
+      generations, ensuring the perfect balance of flavors and textures.
+
+      Our signature recipes combine classic favorites with innovative twists,
+      creating unique treats that satisfy both traditional tastes and adventurous
+      palates. Whether you're starting your day, seeking an afternoon treat, or
+      planning a special event, our donuts are sure to delight.
+    </p>
+  ),
+  image_url: 'chocolate.jpg',
+  price: 2.99
+)
