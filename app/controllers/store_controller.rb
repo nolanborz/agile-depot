@@ -1,10 +1,8 @@
 class StoreController < ApplicationController
   include CurrentCart
   before_action :set_cart
-  before_action :set_visit_count
   def index
     @products = Product.order(:title)
-    @time = Time.new
   end
   def reset_count
     @visits = 0

@@ -8,11 +8,6 @@
   <h1 class="font-bold text-xl mb-6 pb-2 border-b-2">
     Your Galactic Donut Catalog
   </h1>
-  <% if @visits >= 5 %>
-    <p>
-      You've visited here <%= @visits %> times.
-    </p>
-  <% end %>
   <ul>
     <% cache @products do %>
       <% @products.each do |product| %>
@@ -32,7 +27,7 @@
 
                 <%= button_to "Add to Cart",
                 line_items_path(product_id: product),
-                form_class: "inline",
+                form: { data: { turbo: true } },
                 class: 'ml-4 rounded-lg py-1 px-2
                 text-white bg-green-600' %>
               </div>

@@ -25,16 +25,24 @@ class LineItemsController < ApplicationController
   def create
     product = Product.find(params[:product_id])
     @line_item = @cart.add_product(product)
-    session[:visits] = 0
 
     respond_to do |format|
       if @line_item.save
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(
+            :cart,
+            partial: "layouts/cart",
+            locals: { cart: @cart }
+          )
+        end
         format.html { redirect_to store_index_url }
         format.json { render :show,
-        status: :created, location: @line_item }
+          status: :created, location: @line_item }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @line_item.errors, status: :unprocessable_entity }
+        format.html { render :new,
+          status: :unprocessable_entity }
+        format.json { render json: @line_item.errors,
+          status: :unprocessable_entity }
       end
     end
   end
@@ -54,13 +62,10 @@ class LineItemsController < ApplicationController
 
   # DELETE /line_items/1 or /line_items/1.json
   def destroy
-    @line_item = LineItem.find(params[:id])
-    cart = @line_item.cart  # Store the cart reference before destroying
-    @line_item.destroy
+    @line_item.destroy!
 
     respond_to do |format|
-      format.html { redirect_to cart_url(cart), status: :see_other,
-                    notice: "Item was successfully removed from your cart." }
+      format.html { redirect_to line_items_path, status: :see_other, notice: "Line item was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -75,4 +80,5 @@ class LineItemsController < ApplicationController
     def line_item_params
       params.require(:line_item).permit(:product_id)
     end
+  # ...
 end
