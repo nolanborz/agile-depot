@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart
-  before_action :set_cart, only: %i[ create ]
+  before_action :set_cart, only: %i[ create destroy ]
   before_action :set_line_item, only: %i[ show edit update destroy ]
 
   # GET /line_items or /line_items.json
@@ -28,7 +28,13 @@ class LineItemsController < ApplicationController
 
     respond_to do |format|
       if @line_item.save
-        format.turbo_stream { @current_item = @line_item }
+        format.turbo_stream {
+          render turbo_stream: [
+            turbo_stream.replace("cart",
+              partial: "layouts/cart",
+              locals: { cart: @cart })
+          ]
+        }
         format.html { redirect_to store_index_url }
         format.json { render :show,
           status: :created, location: @line_item }
@@ -56,13 +62,25 @@ class LineItemsController < ApplicationController
 
   # DELETE /line_items/1 or /line_items/1.json
   def destroy
+    cart = @line_item.cart
     @line_item.destroy!
 
     respond_to do |format|
-      format.html { redirect_to line_items_path, status: :see_other, notice: "Line item was successfully destroyed." }
+      format.turbo_stream do
+        if cart.line_items.empty?
+          render turbo_stream: turbo_stream.replace("cart", partial: "layouts/cart", locals: { cart: cart })
+        else
+          render turbo_stream: [
+            turbo_stream.remove(@line_item),
+            turbo_stream.replace("cart", partial: "layouts/cart", locals: { cart: cart })
+          ]
+        end
+      end
+      format.html { redirect_to line_items_path, notice: "Line item was successfully destroyed." }
       format.json { head :no_content }
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
