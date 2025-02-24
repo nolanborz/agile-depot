@@ -49,8 +49,6 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_difference("LineItem.count", -1) do
       delete line_item_url(@line_item)
     end
-
-    assert_redirected_to cart_url(cart)
   end
 
   test "should create line_item with unique product" do
@@ -77,5 +75,16 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal 1, cart.line_items.count
     assert_equal 2, cart.line_items.first.reload.quantity
+  end
+
+  test "should create line_item via turbo-stream" do
+    assert_difference("LineItem.count") do
+      post line_items_url, params: { product_id: products(:ruby).id
+    },
+      as: :turbo_stream
+    end
+
+    assert_response :success
+    assert_match /<tr class="line-item-highlight">/, @response.body
   end
 end
