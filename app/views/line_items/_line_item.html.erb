@@ -12,10 +12,17 @@
     <%= number_to_currency(line_item.total_price) %>
   </td>
   <td class="pl-2">
+    <% if line_item.quantity > 1 %>
+      <%= button_to '-',
+          decrease_quantity_line_item_path(line_item),
+          method: :patch,
+          class: 'rounded-lg py-1 px-2 text-white bg-yellow-500' %>
+    <% end %>
+  </td>
+  <td class="pl-2">
     <%= button_to 'Remove',
         line_item_path(line_item),
         method: :delete,
         class: 'rounded-lg py-1 px-2 text-white bg-red-600' %>
   </td>
 </tr>
- 

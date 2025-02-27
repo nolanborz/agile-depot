@@ -1,7 +1,7 @@
 class LineItemsController < ApplicationController
   include CurrentCart
   before_action :set_cart, only: %i[ create destroy ]
-  before_action :set_line_item, only: %i[ show edit update destroy ]
+  before_action :set_line_item, only: %i[ show edit update destroy decrease_quantity ]
 
   # GET /line_items or /line_items.json
   def index
@@ -25,6 +25,7 @@ class LineItemsController < ApplicationController
   def create
     product = Product.find(params[:product_id])
     @line_item = @cart.add_product(product)
+    @current_item = @line_item
 
     respond_to do |format|
       if @line_item.save
@@ -32,7 +33,7 @@ class LineItemsController < ApplicationController
           render turbo_stream: [
             turbo_stream.replace("cart",
               partial: "layouts/cart",
-              locals: { cart: @cart })
+              locals: { cart: @cart, current_item: @current_item })
           ]
         }
         format.html { redirect_to store_index_url }
@@ -80,13 +81,33 @@ class LineItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  def set_line_item
+    @line_item = LineItem.find(params[:id])
+  end
 
+  def decrease_quantity
+    if @line_item.quantity > 1
+      @line_item.quantity -= 1
+      @line_item.save
+
+      respond_to do |format|
+        cart = @line_item.cart
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("cart",
+            partial: "layouts/cart",
+            locals: { cart: cart })
+        end
+        format.html { redirect_to store_index_url }
+        format.json { render :show, status: :ok, location: @line_item }
+      end
+    else
+      destroy
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_line_item
-      @line_item = LineItem.find(params[:id])
-    end
+
 
     # Only allow a list of trusted parameters through.
     def line_item_params
