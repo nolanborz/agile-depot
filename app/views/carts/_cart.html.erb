@@ -13,11 +13,19 @@
       </tr>
     </tfoot>
   </table>
-
+  
   <div class="flex mt-1">
-    <%= button_to 'Empty Cart', cart, method: :delete,
-      class: 'ml-4 rounded-lg py-1 px-2 text-white bg-green-600' %>
+  <%= button_to 'Empty Cart', cart, method: :delete,
+    class: 'ml-4 rounded-lg py-1 px-2 text-white bg-green-600',
+    disabled: current_page?(new_order_path) %>
+  
+  <% unless current_page?(new_order_path) %>
     <%= button_to 'Checkout', new_order_path, method: :get,
-        class: 'ml-4 rounded-lg py-1 px-2 text-black bg-green-200' %>
-  </div>
+      class: 'ml-4 rounded-lg py-1 px-2 text-black bg-green-200' %>
+  <% else %>
+    <button disabled class="ml-4 rounded-lg py-1 px-2 text-gray-500 bg-gray-200 cursor-not-allowed">
+      Checkout
+    </button>
+  <% end %>
+</div>
 </div>

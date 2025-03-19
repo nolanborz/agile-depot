@@ -16,13 +16,15 @@
       <%= button_to '-',
           decrease_quantity_line_item_path(line_item),
           method: :patch,
-          class: 'rounded-lg py-1 px-2 text-white bg-yellow-500' %>
+          class: 'rounded-lg py-1 px-2 text-white bg-yellow-500',
+          disabled: current_page?(new_order_path) %>
     <% end %>
   </td>
   <td class="pl-2">
     <%= button_to 'Remove',
         line_item_path(line_item),
         method: :delete,
-        class: 'rounded-lg py-1 px-2 text-white bg-red-600' %>
+        class: 'rounded-lg py-1 px-2 text-white bg-red-600',
+        disabled: current_page?(new_order_path) %>
   </td>
 </tr>
