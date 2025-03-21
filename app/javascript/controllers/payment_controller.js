@@ -1,18 +1,24 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="payment"
 export default class extends Controller {
-  static targets = [ "selection", "additionalFields" ]
+  static targets = ["selection", "additionalFields"];
 
   initialize() {
-    this.showAdditionalFields()
+    this.showAdditionalFields();
   }
 
   showAdditionalFields() {
-    let selection = this.selectionTarget.value
+    // Get the selected option element
+    const selectedOption =
+      this.selectionTarget.options[this.selectionTarget.selectedIndex];
+
+    // Get the text of the selected payment type (e.g., "Check", "Credit card", etc.)
+    let paymentTypeName = selectedOption ? selectedOption.text : "";
 
     for (let fields of this.additionalFieldsTargets) {
-      fields.disabled = fields.hidden = (fields.dataset.type != selection)
+      // Compare with the data-type attribute which should contain the payment type name
+      fields.disabled = fields.hidden = fields.dataset.type != paymentTypeName;
     }
   }
 }

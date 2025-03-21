@@ -16,6 +16,7 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
+    @payment_types = PaymentType.all
   end
 
   # GET /orders/1/edit
@@ -73,7 +74,8 @@ class OrdersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type)
+      params.require(:order).permit(:name, :address, :email, :payment_type_id, :po_number, :routing_number, :account_number,
+      :credit_card_number, :expiration_date)
     end
 
     def ensure_cart_isnt_empty
