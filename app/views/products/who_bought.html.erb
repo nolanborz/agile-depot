@@ -1,0 +1,19 @@
+<h2>Who the hell bought what?</h2>
+<% @product.orders.each do |order| %>
+  <h3>Order <%= order.id %></h3>
+  <p>Shipped to: <%= order.name %></p>
+  <p>At the address: <%= order.address %></p>
+  <p>Email: <%= order.email %></p>
+  <p>Payment type: <%= order.pay_type %></p>
+
+  <h4>Line Items:</h4>
+  <ul>
+    <% order.line_items.each do |item| %>
+      <% if item.product_id == @product.id %>
+        <li><%= item.quantity %> &times; <%= item.product.title %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
+
+<p><%= link_to 'Back to Products', products_path %></p>
