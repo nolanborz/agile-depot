@@ -2,6 +2,8 @@ class Order < ApplicationRecord
   has_many :line_items, dependent: :destroy
   belongs_to :payment_type
 
+  attr_accessor :po_number, :credit_card_number, :account_number, :routing_number, :expiration_date
+
   validates :name, :address, :email, presence: true
   validates :payment_type_id, presence: true
 
