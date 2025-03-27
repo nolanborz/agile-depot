@@ -4,4 +4,7 @@ one:
   name: Check
 
 two:
-  name: Credit Card
+  name: Credit card
+
+three:
+  name: Purchase order
